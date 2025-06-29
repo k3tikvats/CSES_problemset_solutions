@@ -91,6 +91,45 @@ void solvetabulation()
     }
     cout << dp[n - 1][x] << "\n";
 }
+ void solve()
+{
+    // your code goes here
+
+    int n, x;
+    cin >> n >> x;
+
+    vector<int> c(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> c[i];
+    }
+
+    vector<int>prev(x+1,0);
+
+    prev[0]=1;
+    for (int j = 1; j <= x; j++)
+    {
+        if (j % c[0] == 0)
+            prev[j] = 1;
+    }
+    for (int i = 1; i < n; i++)
+    {
+        vector<int>curr(x+1,0);
+        curr[0]=1;
+        for (int j = 1; j <= x; j++)
+        {
+            
+            int nottake = prev[j];
+            int take = 0;
+            if (c[i] <= j)
+                take = curr[j - c[i]];
+
+            curr[j] = (nottake + take) % M;
+        }
+        prev=curr;
+    }
+    cout << prev[x] << "\n";
+}
 
 signed main()
 {
