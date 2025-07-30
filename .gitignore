@@ -4,4 +4,4 @@ dp/coin_combinations1.cpp
 **/*.cph
 introductory/twosets.cpp
 geometry
-graphs/labyrinth.cpp
+# graphs/labyrinth.cpp
