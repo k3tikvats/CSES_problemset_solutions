@@ -16,16 +16,15 @@ using namespace std;
 #define pp pop
 unsigned long long M = 1000000007;
 
-bool dfs(int node, vector<vector<int>> adj, vector<int> &vis, vector<int> &par)
+int cyclenode = -1;
+bool dfs(int node, vector<vector<int>> &adj, vector<int> &vis, vector<int> &par)
 {
 
     vis[node] = 1;
-
     for (auto it : adj[node])
     {
-        if (it != par[it])
+        if (it != par[node])
         {
-
             if (vis[it])
             {
 
@@ -40,34 +39,62 @@ bool dfs(int node, vector<vector<int>> adj, vector<int> &vis, vector<int> &par)
                 if (dfs(it, adj, vis, par))
                 {
                     return 1;
-
                 }
             }
         }
     }
-}   
+    return 0;
+}
 
-    void solve()
+void solve()
+{
+    // your code goes here
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> adj(n + 1);
+    for (int i = 0; i < m; i++)
     {
-        // your code goes here
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<int> par(n + 1);
+    for (int i = 1; i <= n; i++)
+        par[i] = i;
+    vector<int> vis(n + 1, 0);
+    bool flag = dfs(1, adj, vis, par);
+    vector<int> ans;
 
-        int n;
-        cin >> n;
+    if (flag)
+    {
 
-        vector<int> a(n);
-        for (int i = 0; i < n; i++)
+        int i = par[cyclenode];
+        ans.push_back(par[cyclenode]);
+        while (i != cyclenode)
         {
-            cin >> a[i];
+            ans.push_back(par[i]);
+            i = par[i];
+        }
+
+        cout << ans.size();
+        reverse(ans.begin(), ans.end());
+
+        for (int i = 0; i < ans.size(); i++)
+        {
+            cout << ans[i];
         }
     }
-
-    signed main()
+}
+signed main()
+{
+    fastio int t;
+    cin >> t;
+    while (t--)
     {
-        fastio int t;
-        cin >> t;
-        while (t--)
-        {
-            solve();
-        }
-        return 0;
+        solve();
     }
+    return 0;
+}
