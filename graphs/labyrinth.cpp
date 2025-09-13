@@ -11,33 +11,9 @@ using namespace std;
 #define pp pop
 unsigned long long M = 1000000007;
 
-vector<int>dijkstra(int n,vector<vector<pair<int,int>>>&adj,int src){
-    set<pair<int,int>>st;
-    vector<int>dist(n+1,LLONG_MAX);
-    st.insert({0,src});
-    dist[src]=0;
-
-    while(!st.empty()){
-        auto it=*(st.begin());
-
-        int dis=it.first;
-        int node=it.second;
-        st.erase(it);
-        for(auto jt:adj[node]){
-            int adjNode=jt.first;
-            int edgWt=jt.second;
-
-            if(dis+edgWt<dist[adjNode]){
-                if(dist[adjNode]!=LLONG_MAX){
-                    st.erase({dist[adjNode],adjNode});
-                }
-                dist[adjNode]=dis+edgWt;
-                st.insert({dist[adjNode],adjNode});
-            }
-        }
-    }
-    return dist;
-} 
+vector<int>dx={-1,0,1,0};//U,R,D,L
+vector<int>dy={0,1,0,-1};
+vector<char>drxn={'U','R','D','L'};
  
 void solve(){
     // your code goes here
@@ -45,22 +21,57 @@ void solve(){
 	int n,m;
     cin>>n>>m;
 
-    vector<vector<int>> g(n, vector<int>(m));
+    vector<vector<char>> g(n, vector<char>(m));
+    int sr=-1,sc=-1;
     for(int i=0;i<n;i++){
         for(int j=0;j<m;j++){
             cin>>g[i][j];
+            if(g[i][j]=='A'){
+                sr=i;
+                sc=j;
+            }
         }
     }
-
-    
+    queue<pair<int,int>> q;
+    vector<vector<char>>visited(n,vector<char>(m,X));
+    visited[sr][sc]='A';
+    q.push({sr,sc});
+    while(!q.empty()){
+        auto it=q.front();
+        q.pop();
+        int r=it.first;
+        int c=it.second;
         
-	
+        for(int i=0;i<4;i++){
+            int nr=r+dx[i];
+            int nc=c+dy[i];
+
+            if(nr>=0&&nr<n&&nc>=0&&nc<m&&visited!='X'&&g[nr][nc]!='#'){
+                visited[r][c] = drxn[i];
+                if(g[nr][nc]=='B'){
+                    s+=drxn[i];
+                    cout<<"YES"<<endl<<s.size()<<endl<<s<<endl;
+                    return;
+                }
+                q.push({nr,nc});
+            }
+
+        }
+        
+
+    }
+    
+    cout<<"NO"<<endl;
+
+    return;
+
+    	
 }
 
 signed main() {
     fastio
-	int t;
-	cin>>t;
+	int t=1;
+
 	while(t--){
 	    solve();
 	}
