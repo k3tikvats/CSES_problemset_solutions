@@ -7,3 +7,6 @@ geometry
 # graphs/labyrinth.cpp
 tree/tree_distances_I.cpp
 sorting_and_searching/concert_tickets.cpp
+tree/tree_diameter.cpp
+sorting_and_searching/collecting_numbers.cpp
+sorting_and_searching/maximumsubarraysum.cpp
